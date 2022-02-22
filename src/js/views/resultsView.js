@@ -1,8 +1,9 @@
+import View from "./View";
 import icons from "url:../../img/icons.svg";
 
-class ResultsView {
-  #parentElement = document.querySelector(".results");
-  #errorMessage = "No recipes found for your query. Please try again ;)";
+class ResultsView extends View {
+  _parentElement = document.querySelector(".results");
+  _errorMessage = "No recipes found for your query. Please try again ;)";
 
   renderSpinner() {
     const markup = `
@@ -13,18 +14,14 @@ class ResultsView {
       </div>
     `;
 
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
-  #clear() {
-    this.#parentElement.innerHTML = "";
-  }
-
-  #generateMarkup(results) {
+  _generateMarkup() {
     const id = window.location.hash.slice(1);
     // console.log(id);
-    return results
+    return this._data
       .map(
         (preview) => `
         <li class="preview">
@@ -53,21 +50,12 @@ class ResultsView {
             <use href="${icons}#icon-alert-triangle"></use>
           </svg>
         </div>
-        <p>${this.#errorMessage}</p>
+        <p>${this._errorMessage}</p>
       </div>
     `;
 
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", markup);
-  }
-
-  render(data) {
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
-
-    const markup = this.#generateMarkup(data);
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 }
 
