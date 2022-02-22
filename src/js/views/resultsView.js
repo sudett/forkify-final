@@ -5,29 +5,26 @@ class ResultsView extends View {
   _parentElement = document.querySelector(".results");
   _errorMessage = "No recipes found for your query. Please try again ;)";
 
-  renderSpinner() {
-    const markup = `
-      <div class="spinner">
-        <svg>
-          <use href="${icons}#icon-loader"></use>
-        </svg>
-      </div>
-    `;
+  clickHandler(handler) {
+    this._parentElement.addEventListener("click", (e) => {
+      const targetPreview = e.target.closest(".preview");
 
-    this._clear();
-    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+      if (!targetPreview) return;
+
+      const previewId = targetPreview?.dataset.id;
+
+      // targetPreview.classList.add("preview__link--active");
+
+      handler(previewId);
+    });
   }
 
   _generateMarkup() {
-    const id = window.location.hash.slice(1);
-    // console.log(id);
     return this._data
       .map(
         (preview) => `
-        <li class="preview">
-          <a class="preview__link ${
-            preview.id === id ? "preview__link--active" : ""
-          } " href="#${preview.id}">
+        <li class="preview" data-id="${preview.id}">
+          <a class="preview__link " href="#${preview.id}">
             <figure class="preview__fig">
               <img src="${preview.image}" alt="${preview.title}" />
             </figure>
@@ -40,22 +37,6 @@ class ResultsView extends View {
   `
       )
       .join("");
-  }
-
-  renderError() {
-    const markup = `
-      <div class="error">
-        <div>
-          <svg>
-            <use href="${icons}#icon-alert-triangle"></use>
-          </svg>
-        </div>
-        <p>${this._errorMessage}</p>
-      </div>
-    `;
-
-    this._clear();
-    this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 }
 
