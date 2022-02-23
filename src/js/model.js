@@ -66,3 +66,13 @@ export const loadRecipe = async (id) => {
     throw err;
   }
 };
+
+// Update servings
+export const updateServings = (newServings) => {
+  state.recipe.ingredients.map((ing) => {
+    ing.quantity = (newServings * ing.quantity) / state.recipe.servings;
+    // newQt = newServings * oldQt / oldServings
+  });
+
+  state.recipe.servings = newServings;
+};

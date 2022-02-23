@@ -5,6 +5,7 @@ import {
   loadSearchResults,
   getSearchResultsPage,
   loadRecipe,
+  updateServings,
 } from "./model";
 
 import searchView from "./views/searchView";
@@ -57,6 +58,9 @@ const controlRecipe = async (id) => {
 
     // Render recipe
     recipeView.render(state.recipe);
+
+    // Update results (mark selected search result)
+    resultsView.update(getSearchResultsPage());
   } catch (err) {
     // console.error(err);
 
@@ -64,12 +68,22 @@ const controlRecipe = async (id) => {
   }
 };
 
+// Servings
+const controlServings = (newServings) => {
+  // Update the recipe servings (state)
+  updateServings(newServings);
+
+  // Update the recipe view
+  recipeView.update(state.recipe);
+};
+
 // Initialization
 const init = () => {
-  searchView.searchHandler(controlSearchResults);
-  paginationView.clickHandler(controlPagination);
-  resultsView.clickHandler(controlRecipe);
-  recipeView.loadHandler(controlRecipe);
+  searchView.searchQueryHandler(controlSearchResults);
+  paginationView.paginationHandler(controlPagination);
+  resultsView.resultClickHandler(controlRecipe);
+  recipeView.loadRenderHandler(controlRecipe);
+  recipeView.updateServingsHandler(controlServings);
 };
 
 init();
