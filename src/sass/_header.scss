@@ -109,7 +109,8 @@
   transition: all 0.5s 0.2s;
 }
 
-.nav__btn--bookmarks:hover ~ * {
+.nav__btn--bookmarks:hover ~ .bookmarks,
+.bookmarks:hover {
   visibility: visible;
   opacity: 1;
 }

@@ -1,8 +1,12 @@
 import View from "./View";
 
-class ResultsView extends View {
-  _parentElement = document.querySelector(".results");
-  _errorMessage = "No recipes found for your query. Please try again ;)";
+class BookmarksView extends View {
+  _parentElement = document.querySelector(".bookmarks__list");
+  _errorMessage = "No bookmarks yet. Find a nice recipe and bookmark it :)";
+
+  renderBookmarksHandler(handler) {
+    window.addEventListener("load", handler);
+  }
 
   previewClickHandler(handler) {
     this._parentElement.addEventListener("click", (e) => {
@@ -41,4 +45,4 @@ class ResultsView extends View {
   }
 }
 
-export default new ResultsView();
+export default new BookmarksView();
