@@ -9,6 +9,7 @@ import {
   addBookmark,
   removeBookmark,
   retrieveBookmarks,
+  uploadRecipe,
 } from "./model";
 
 import searchView from "./views/searchView";
@@ -16,6 +17,7 @@ import resultsView from "./views/resultsView";
 import paginationView from "./views/paginationView";
 import recipeView from "./views/recipeView";
 import bookmarksView from "./views/bookmarksView";
+import uploadRecipeView from "./views/uploadRecipeView";
 
 // Search results
 const controlSearchResults = async () => {
@@ -107,6 +109,29 @@ const controlRenderBookmarks = () => {
   bookmarksView.render(state.bookmarks);
 };
 
+// Upload recipe
+const controlUploadRecipe = async (recipeData) => {
+  try {
+    // Upload new recipe
+    await uploadRecipe(recipeData);
+
+    // render bookmarks view
+    bookmarksView.render(state.bookmarks);
+
+    // render recipe
+    recipeView.render(state.recipe);
+
+    // change id in url
+    window.history.pushState(null, "", `#${state.recipe.id}`);
+
+    // show success message
+    uploadRecipeView.renderMessage();
+  } catch (err) {
+    uploadRecipeView.renderError(err.message);
+    console.error(err);
+  }
+};
+
 // Initialization
 const init = () => {
   retrieveBookmarks();
@@ -118,6 +143,7 @@ const init = () => {
   recipeView.updateServingsHandler(controlServings);
   recipeView.addBookmarkHandler(controlAddBookmark);
   bookmarksView.previewClickHandler(controlRecipe);
+  uploadRecipeView.uploadHandler(controlUploadRecipe);
 };
 
 init();
